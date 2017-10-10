@@ -1,0 +1,16 @@
+:host {
+  display: block;
+}
+
+nav a {
+  display: inline-block;
+  padding: 6px;
+
+  &:not(:last-of-type) {
+    margin-right: 8px;
+  }
+
+  &:hover {
+    background-color: #efefef;
+  }
+}
