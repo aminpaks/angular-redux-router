@@ -1,0 +1,6 @@
+<select (change)="selectionChange($event.target)"  [attr.disabled]="(loadingItems$ | async) === false ? undefined : 'disabled'">
+  <option>Select</option>
+  <option *ngFor="let item of (items$ | async)" [attr.value]="item?.value">{{item?.title}}</option>
+</select>
+<button [attr.disabled]="(loadingItems$ | async) === false ? undefined : 'disabled'">Let's move to Feature Y</button>
+<span class="loading" *ngIf="(loadingItems$ | async) === true">Loading...</span>
