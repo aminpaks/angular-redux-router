@@ -114,6 +114,12 @@
       "check-separator",
       "check-type"
     ],
+    "space-before-function-paren": [
+      true, {
+      "anonymous": "always",
+      "named": "never",
+      "asyncArrow": "always"
+    }],
     "directive-selector": [
       true,
       "attribute",
