@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
 import { EpicMiddleware } from 'redux-observable';
 
-import { AppState, Action } from './store.types';
+import { AppState } from './store.types';
+import { Action } from './store.utils';
 
 @Injectable()
 export class StoreService {
