@@ -10,6 +10,10 @@ import { NgRedux } from '@angular-redux/store';
 import { Observable } from 'rxjs/Observable';
 import { AppState } from './store.types';
 
+/**
+ * Redux v3.x doesn't include proper typings,
+ * these are the replacements...
+ */
 export type Dispatch<A> = (action: A) => A;
 export type Middleware<S, A> = (store: NgRedux<S>) => (dispatch: Dispatch<A>) => Dispatch<A>;
 
@@ -38,16 +42,25 @@ export interface PlainAction<Payload = any> extends SimpleAction {
  */
 export const convertActionMiddleware: Middleware<AppState, SimpleAction> = store => dispatch => action => {
   let simpleAction: SimpleAction;
+
   if (isHigherOrderAction(action)) {
     simpleAction = action.toPlain();
   } else {
-    simpleAction = { ...action };
+    simpleAction = action;
   }
+
   return dispatch(simpleAction);
 };
 
 export function actionCreator<Payload = undefined>(actionType: string): ActionCreator<Payload> {
+  /**
+   * Stores a safe name for this action
+   */
   const safeClassName = getSafeClassName(actionType);
+
+  /**
+   * Constructs the action class
+   */
   const actionGenerator = new Function(`
     return function ${safeClassName}(payload, error) {
       this.type = "${actionType}";
@@ -55,17 +68,48 @@ export function actionCreator<Payload = undefined>(actionType: string): ActionCr
       this.error = error == void 0 ? false : true;
     };
   `); // `;
+
+  /**
+   * Generates the action
+   */
   const action: any = actionGenerator();
+
+  /**
+   * Static type property
+   */
   action.type = actionType;
+
+  /**
+   * Turns a plain Object action to a higher order action
+   */
   action.parse = function (simple: PlainAction<Payload>) {
     return new action(simple.payload, simple.error);
   };
+
+  /**
+   * A prototype method that returns a plain Object action
+   */
   action.prototype.toPlain = function () {
     return { type: this.type, payload: this.payload, error: this.error };
   };
+
+  /**
+   * A prototype method that returns an observable of this action
+   */
   action.prototype.asObservable = function () {
-    return Observable.of(this.toPlain());
+    /* tslint:disable:triple-equals */
+    if (Observable == undefined) {
+      /* tslint:enable:triple-equals */
+      throw new Error(`Could not find Observable implementation. Did you forgot to import RxJS?`); // `;
+
+    } else {
+      return Observable.of(this.toPlain());
+    }
   };
+
+  /**
+   * Returns the action creator
+   */
   return action;
 }
 
