@@ -1,5 +1,5 @@
-import { ComponentsState } from 'app/feature-x/components/store/components.types';
+import { DropdownXState, DropdownXItem } from 'app/feature-x/dropdown-x/store/dropdown-x.types';
 
 export interface FeatureXState {
-  components: ComponentsState;
+  dropdownX: DropdownXState<DropdownXItem>;
 }

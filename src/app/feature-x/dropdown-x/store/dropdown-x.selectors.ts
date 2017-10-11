@@ -2,7 +2,7 @@ import { AppState, PlainAction } from 'app/store';
 import { DropdownXState, DropdownXItem } from './dropdown-x.types';
 
 export function dropdownXSelector(state: AppState): DropdownXState<DropdownXItem> {
-  return state.featureX.components.dropdownX;
+  return state.featureX.dropdownX;
 }
 
 export function dropdownXItemsSelector(state: AppState): DropdownXItem[] {

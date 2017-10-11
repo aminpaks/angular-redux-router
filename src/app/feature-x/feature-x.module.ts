@@ -6,18 +6,18 @@ import 'rxjs/add/operator/startWith';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { ComponentsModule } from './components';
+import { DropdownXModule } from './dropdown-x';
 import { FeatureXComponent } from './feature-x.component';
 import { FeatureXRoutingModule } from './feature-x-routing.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    ComponentsModule,
+    DropdownXModule,
     FeatureXRoutingModule,
   ],
   exports: [
-    ComponentsModule,
+    DropdownXModule,
   ],
   providers: [
   ],

@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 import { Action } from 'app/store';
 import { FeatureXState } from './feature-x.types';
-import { InitialState as ComponentsInitialState, reducer as componentsReducer } from 'app/feature-x/components';
+import { InitialState as DropdownXInitialState, reducer as dropdownXReducer } from 'app/feature-x/dropdown-x';
 
 export const InitialState: FeatureXState = {
-  components: ComponentsInitialState,
+  dropdownX: DropdownXInitialState,
 };
 
 export const reducer = combineReducers<FeatureXState>({
-  components: componentsReducer,
+  dropdownX: dropdownXReducer,
 });
