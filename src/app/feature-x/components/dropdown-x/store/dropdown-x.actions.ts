@@ -9,3 +9,6 @@ export const DropdownXLoadAction = actionCreator('[Dropdown X] Load Started');
 export const DropdownXLoadSuccessAction = actionCreator<DropdownXItem[]>('[Dropdown X] Load Success');
 export const DropdownXLoadFailedAction = actionCreator<Error>('[Dropdown X] Load Failed');
 export const DropdownXSelectAction = actionCreator<DropdownXItem | false>('[Dropdown X] Select');
+export const FeatureXMoveToAction = actionCreator<string>('[Feature X] MoveTo Started');
+export const FeatureXMoveToFailedAction = actionCreator<Error>('[Feature X] MoveTo Failed');
+export const FeatureXMoveToSuccessAction = actionCreator('[Feature X] MoveTo Success');

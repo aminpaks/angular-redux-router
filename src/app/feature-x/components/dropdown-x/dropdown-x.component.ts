@@ -1,13 +1,18 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { select, NgRedux } from '@angular-redux/store';
+import { dispatch, select, NgRedux } from '@angular-redux/store';
 
-import { AppState, Action } from 'app/store';
-import { DropdownXSelectAction, DropdownXLoadAction } from './store/dropdown-x.actions';
+import { AppState, Action, PlainAction } from 'app/store';
+import {
+  DropdownXLoadAction,
+  DropdownXSelectAction,
+  FeatureXMoveToAction,
+} from './store/dropdown-x.actions';
 import { DropdownXItem } from './store/dropdown-x.types';
 import {
   dropdownXItemsSelector,
   dropdownXItemsLoadingSelector,
+  dropdownXSelectedValueSelector,
 } from './store/dropdown-x.selectors';
 
 @Component({
@@ -27,6 +32,9 @@ export class DropdownXComponent {
   @select(dropdownXItemsLoadingSelector)
   loadingItems$: Observable<boolean>;
 
+  @select(dropdownXSelectedValueSelector)
+  selectedValue$: Observable<DropdownXItem>;
+
   selectionChange(target: HTMLSelectElement): void {
     const { value } = target;
     this.items$
@@ -38,6 +46,8 @@ export class DropdownXComponent {
   }
 
   moveToButtonClick(): void {
-    debugger;
+    this.selectedValue$
+      .take(1)
+      .subscribe(item => this.store.dispatch(new FeatureXMoveToAction(item.url)));
   }
 }
