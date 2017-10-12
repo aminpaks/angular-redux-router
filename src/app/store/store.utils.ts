@@ -20,6 +20,7 @@ export type Middleware<S, A> = (store: NgRedux<S>) => (dispatch: Dispatch<A>) =>
 export interface ActionCreator<Payload> {
   new (payload?: Payload, error?: boolean): Action<Payload>;
   type: string;
+  is: (a: any) => a is Action<Payload>;
   parse: (action: PlainAction<Payload>) => Action<Payload>;
 }
 
@@ -80,7 +81,14 @@ export function actionCreator<Payload = undefined>(actionType: string): ActionCr
   action.type = actionType;
 
   /**
-   * Turns a plain Object action to a higher order action
+   * Static method to check if a value is instance of this action
+   */
+  action.is = function (a: any) {
+    return a['type'] === actionType;
+  };
+
+  /**
+   * Static method to turn a plain Object action to a higher order action
    */
   action.parse = function (simple: PlainAction<Payload>) {
     return new action(simple.payload, simple.error);
@@ -118,5 +126,5 @@ function getSafeClassName(input: string): string {
 }
 
 function isHigherOrderAction(action: any): action is Action {
-  return typeof action['toPlain'] === 'function';
+  return action['constructor'] !== Object || typeof action['toPlain'] === 'function';
 }

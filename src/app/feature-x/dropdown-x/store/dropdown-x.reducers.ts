@@ -1,4 +1,4 @@
-import { AppState, PlainAction } from 'app/store';
+import { AppState, Action } from 'app/store';
 import { DropdownXState, DropdownXItem } from './dropdown-x.types';
 import {
   DropdownXLoadAction,
@@ -13,28 +13,27 @@ export const InitialState: DropdownXState<DropdownXItem> = {
   selectedValue: false,
 };
 
-export function reducer(state: DropdownXState<DropdownXItem> = InitialState, action: PlainAction): DropdownXState<DropdownXItem> {
-  switch (action.type) {
-    case DropdownXLoadAction.type:
-      return {
-        ...state,
-        loading: true,
-      };
+export function reducer(state: DropdownXState<DropdownXItem> = InitialState, action: Action): DropdownXState<DropdownXItem> {
+  if (DropdownXLoadAction.is(action)) {
+    return {
+      ...state,
+      loading: true,
+    };
 
-    case DropdownXLoadSuccessAction.type:
-      return {
-        ...state,
-        loading: false,
-        items: DropdownXLoadSuccessAction.parse(action).payload,
-      };
+  } else if (DropdownXLoadSuccessAction.is(action)) {
+    return {
+      ...state,
+      loading: false,
+      items: action.payload,
+    };
 
-    case DropdownXSelectAction.type:
-      return {
-        ...state,
-        selectedValue: DropdownXSelectAction.parse(action).payload,
-      };
+  } else if (DropdownXSelectAction.is(action)) {
+    return {
+      ...state,
+      selectedValue: action.payload,
+    };
 
-    default:
-      return state;
+  } else {
+    return state;
   }
 }
