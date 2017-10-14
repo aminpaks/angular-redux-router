@@ -3,12 +3,15 @@ import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/startWith';
+import 'rxjs/add/observable/of';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { StoreService } from 'app/store//store.service';
 import { DropdownXModule } from './dropdown-x';
 import { FeatureXComponent } from './feature-x.component';
 import { FeatureXRoutingModule } from './feature-x-routing.module';
+import { reducer as featureXReducer } from './store/feature-x.reducers';
 
 @NgModule({
   imports: [
@@ -28,4 +31,8 @@ import { FeatureXRoutingModule } from './feature-x-routing.module';
     FeatureXComponent,
   ],
 })
-export class FeatureXModule { }
+export class FeatureXModule {
+  constructor (storeService: StoreService) {
+    storeService.addInitialReducer('featureX', featureXReducer);
+  }
+}

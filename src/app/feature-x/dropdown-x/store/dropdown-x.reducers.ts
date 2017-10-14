@@ -1,4 +1,4 @@
-import { AppState, Action } from 'app/store';
+import { PlainAction } from 'redux-typed-actions';
 import { DropdownXState, DropdownXItem } from './dropdown-x.types';
 import {
   DropdownXLoadAction,
@@ -13,7 +13,7 @@ export const InitialState: DropdownXState<DropdownXItem> = {
   selectedValue: false,
 };
 
-export function reducer(state: DropdownXState<DropdownXItem> = InitialState, action: Action): DropdownXState<DropdownXItem> {
+export function reducer(state: DropdownXState<DropdownXItem> = InitialState, action: PlainAction): DropdownXState<DropdownXItem> {
   if (DropdownXLoadAction.is(action)) {
     return {
       ...state,

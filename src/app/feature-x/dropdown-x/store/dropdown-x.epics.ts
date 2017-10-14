@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
-import { NgRedux } from '@angular-redux/store';
+import { PlainAction } from 'redux-typed-actions';
+import { Observable } from 'rxjs/Observable';
 import { createEpicMiddleware, combineEpics, EpicMiddleware, Epic } from 'redux-observable';
 
-import { AppState, PlainAction } from 'app/store';
-import { StoreService } from 'app/store/store.service';
-import { DropdownXItem } from './dropdown-x.types';
+import { AppState } from 'app/feature-x';
 import { DropdownXService } from './dropdown-x.service';
 import {
   DropdownXLoadAction,
   DropdownXLoadFailedAction,
   DropdownXLoadSuccessAction,
-  DropdownXSelectAction,
   FeatureXMoveToAction,
   FeatureXMoveToFailedAction,
   FeatureXMoveToSuccessAction,
@@ -31,12 +29,13 @@ export class DropdownXEpics {
   private loadEpic(): Epic<PlainAction, AppState> {
     return (action$, _store) => action$
       .ofType(DropdownXLoadAction.type)
+      .startWith(DropdownXLoadAction.get())
       .switchMap(() =>
         this.service.getRepositories()
           .map(repos => DropdownXService.transformToItem(repos))
           .delay(2000)
-          .map(repos => new DropdownXLoadSuccessAction(repos))
-          .catch(() => new DropdownXLoadFailedAction(new Error('Oops')).asObservable()));
+          .map(repos => DropdownXLoadSuccessAction.strictGet(repos))
+          .catch(() => Observable.of(DropdownXLoadFailedAction.strictGet('Oops'))));
   }
 
   private moveToEpic(): Epic<PlainAction, AppState> {
@@ -44,8 +43,8 @@ export class DropdownXEpics {
       .ofType(FeatureXMoveToAction.type)
       .map(() => {
         console.log('Here we should call the router to go to Feature Y :)');
-        return new FeatureXMoveToSuccessAction();
+        return FeatureXMoveToSuccessAction.get();
       })
-      .catch(error => new FeatureXMoveToFailedAction(new Error(error)).asObservable());
+      .catch(error => Observable.of(FeatureXMoveToFailedAction.strictGet(error)));
   }
 }

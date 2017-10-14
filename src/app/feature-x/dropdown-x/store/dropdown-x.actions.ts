@@ -1,14 +1,11 @@
-import { Injectable } from '@angular/core';
-import { NgRedux } from '@angular-redux/store';
-import { actionCreator } from 'app/store/store.utils';
+import { defineAction } from 'redux-typed-actions';
 
 import { DropdownXItem } from './dropdown-x.types';
-import { GithubRepository } from './dropdown-x.service';
 
-export const DropdownXLoadAction = actionCreator('[Dropdown X] Load Started');
-export const DropdownXLoadSuccessAction = actionCreator<DropdownXItem[]>('[Dropdown X] Load Success');
-export const DropdownXLoadFailedAction = actionCreator<Error>('[Dropdown X] Load Failed');
-export const DropdownXSelectAction = actionCreator<DropdownXItem | false>('[Dropdown X] Select');
-export const FeatureXMoveToAction = actionCreator<string>('[Feature X] MoveTo Started');
-export const FeatureXMoveToFailedAction = actionCreator<Error>('[Feature X] MoveTo Failed');
-export const FeatureXMoveToSuccessAction = actionCreator('[Feature X] MoveTo Success');
+export const DropdownXLoadAction = defineAction('[Dropdown X] Load Started');
+export const DropdownXLoadSuccessAction = defineAction<DropdownXItem[]>('[Dropdown X] Load Success');
+export const DropdownXLoadFailedAction = defineAction<string>('[Dropdown X] Load Failed');
+export const DropdownXSelectAction = defineAction<DropdownXItem | false>('[Dropdown X] Select');
+export const FeatureXMoveToAction = defineAction<string>('[Feature X] MoveTo Started');
+export const FeatureXMoveToFailedAction = defineAction<string>('[Feature X] MoveTo Failed');
+export const FeatureXMoveToSuccessAction = defineAction('[Feature X] MoveTo Success');

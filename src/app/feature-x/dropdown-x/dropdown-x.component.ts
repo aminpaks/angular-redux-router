@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { dispatch, select, NgRedux } from '@angular-redux/store';
+import { select, NgRedux } from '@angular-redux/store';
 
-import { AppState, Action, PlainAction } from 'app/store';
+import { AppState } from 'app/feature-x';
 import {
   DropdownXLoadAction,
   DropdownXSelectAction,
@@ -23,7 +23,7 @@ import {
 export class DropdownXComponent {
 
   constructor(private store: NgRedux<AppState>) {
-    this.store.dispatch(new DropdownXLoadAction());
+    this.store.dispatch(DropdownXLoadAction.get());
   }
 
   @select(dropdownXItemsSelector)
@@ -35,19 +35,18 @@ export class DropdownXComponent {
   @select(dropdownXSelectedValueSelector)
   selectedValue$: Observable<DropdownXItem>;
 
-  selectionChange(target: HTMLSelectElement): void {
+  selectionChange(target: HTMLSelectElement) {
     const { value } = target;
-    this.items$
-      .map(items => items.find(item => item.value === value))
+    return this.items$
       .take(1)
-      .subscribe(item => {
-        this.store.dispatch(new DropdownXSelectAction(item === undefined ? false : item));
-      });
+      .map(items => items.find(item => item.value === value))
+      .map(item => item === undefined ? false : item)
+      .subscribe(item => this.store.dispatch(DropdownXSelectAction.strictGet(item)));
   }
 
   moveToButtonClick(): void {
     this.selectedValue$
       .take(1)
-      .subscribe(item => this.store.dispatch(new FeatureXMoveToAction(item.url)));
+      .subscribe(item => this.store.dispatch(FeatureXMoveToAction.strictGet(item.url)));
   }
 }

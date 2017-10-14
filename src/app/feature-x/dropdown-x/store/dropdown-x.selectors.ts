@@ -1,4 +1,4 @@
-import { AppState, PlainAction } from 'app/store';
+import { AppState } from 'app/feature-x';
 import { DropdownXState, DropdownXItem } from './dropdown-x.types';
 
 export function dropdownXSelector(state: AppState): DropdownXState<DropdownXItem> {
