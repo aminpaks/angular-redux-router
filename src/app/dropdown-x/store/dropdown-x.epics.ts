@@ -3,16 +3,18 @@ import { PlainAction } from 'redux-typed-actions';
 import { Observable } from 'rxjs/Observable';
 import { createEpicMiddleware, combineEpics, EpicMiddleware, Epic } from 'redux-observable';
 
-import { AppState } from 'app/feature-x';
+import { AppState } from 'app/store/store.types';
 import { DropdownXService } from './dropdown-x.service';
 import {
   DropdownXLoadAction,
   DropdownXLoadFailedAction,
   DropdownXLoadSuccessAction,
-  FeatureXMoveToAction,
-  FeatureXMoveToFailedAction,
-  FeatureXMoveToSuccessAction,
 } from './dropdown-x.actions';
+import {
+  DropdownXMoveToAction,
+  DropdownXMoveToFailedAction,
+  DropdownXMoveToSuccessAction,
+} from 'app/shared/dropdown-x/store/dropdown-x.actions';
 
 @Injectable()
 export class DropdownXEpics {
@@ -29,22 +31,21 @@ export class DropdownXEpics {
   private loadEpic(): Epic<PlainAction, AppState> {
     return (action$, _store) => action$
       .ofType(DropdownXLoadAction.type)
-      .startWith(DropdownXLoadAction.get())
-      .switchMap(() =>
+      .switchMap((action) =>
         this.service.getRepositories()
           .map(repos => DropdownXService.transformToItem(repos))
           .delay(2000)
-          .map(repos => DropdownXLoadSuccessAction.strictGet(repos))
-          .catch(() => Observable.of(DropdownXLoadFailedAction.strictGet('Oops'))));
+          .map(repos => DropdownXLoadSuccessAction.strictGet(repos, action.meta))
+          .catch(() => Observable.of(DropdownXLoadFailedAction.strictGet('Oops', action.meta))));
   }
 
   private moveToEpic(): Epic<PlainAction, AppState> {
     return (action$, _store) => action$
-      .ofType(FeatureXMoveToAction.type)
-      .map(() => {
+      .ofType(DropdownXMoveToAction.type)
+      .map((action) => {
         console.log('Here we should call the router to go to Feature Y :)');
-        return FeatureXMoveToSuccessAction.get();
+        return DropdownXMoveToSuccessAction.get(undefined, action.meta);
       })
-      .catch(error => Observable.of(FeatureXMoveToFailedAction.strictGet(error)));
+      .catch(error => Observable.of(DropdownXMoveToFailedAction.strictGet(error)));
   }
 }

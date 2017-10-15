@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
-import { DropdownXItem } from './dropdown-x.types';
+import { DropdownXItem } from '../dropdown-x.types';
 
 export interface GithubRepository {
   id: number;

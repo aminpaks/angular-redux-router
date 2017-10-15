@@ -9,7 +9,6 @@ import { DropdownXComponent } from './dropdown-x.component';
 
 @NgModule({
   providers: [
-    StoreService,
     DropdownXEpics,
     DropdownXService,
   ],

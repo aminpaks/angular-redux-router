@@ -4,17 +4,20 @@ import { NgRedux } from '@angular-redux/store';
 import { PlainAction } from 'redux-typed-actions';
 import { combineReducers } from 'redux';
 
-import { AppState, RootState } from './store.types';
+import { AppState, RootState, Reducer, ReducerContainer } from './store.types';
 
-export type Reducer<S> = (state: S, action: PlainAction) => S;
-export interface ReducerContainer<S> {
-  [keyName: string]: Reducer<S>;
-}
+
 
 @Injectable()
 export class StoreService {
   private epics: any[] = [];
   private reducers: any = {};
+  private store: any | undefined;
+  private rootReducer: any | undefined;
+
+  constructor() {
+    debugger;
+  }
 
   getAllEpics(): EpicMiddleware<PlainAction, AppState>[] {
     return this.epics;
@@ -26,14 +29,24 @@ export class StoreService {
 
   addInitialReducer<S extends AppState>(keyName: string, reducer: Reducer<S>): void {
     this.reducers[keyName] = reducer;
+
+    if (this.store) {
+      debugger;
+      this.replaceRootReducer(this.rootReducer, this.store);
+    }
   }
 
-  replaceReducers<S extends AppState>(rootReducer: Reducer<RootState>, store: NgRedux<S>): void {
+  replaceRootReducer<S extends AppState>(rootReducer: Reducer<RootState>, store: NgRedux<S>): void {
+    if (!this.store) {
+      this.store = store;
+    }
+    if (!this.rootReducer) {
+      this.rootReducer = rootReducer;
+    }
     store.replaceReducer(combineReducers<S>({
       ...this.getAllInitialReducers(),
       root: rootReducer,
     }));
-
   }
 
   registerEpic(epic: any): void {

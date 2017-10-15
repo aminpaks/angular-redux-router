@@ -1,5 +1,6 @@
-import { AppState } from 'app/feature-x';
-import { DropdownXState, DropdownXItem } from './dropdown-x.types';
+import { AppState } from 'app/feature-x/store/feature-x.types';
+import { DropdownXState } from './dropdown-x.types';
+import { DropdownXItem } from '../dropdown-x.types';
 
 export function dropdownXSelector(state: AppState): DropdownXState<DropdownXItem> {
   return state.featureX.dropdownX;

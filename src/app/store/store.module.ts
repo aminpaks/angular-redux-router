@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { NgModule } from '@angular/core';
+import { NgModule, Optional, SkipSelf, ModuleWithProviders } from '@angular/core';
 import { NgRedux, NgReduxModule, DevToolsExtension } from '@angular-redux/store';
 
 import { AppState } from './store.types';
@@ -11,14 +11,18 @@ import { AppLoadAction } from './store.actions';
 @NgModule({
   imports: [NgReduxModule],
   exports: [NgReduxModule],
-  providers: [StoreService],
 })
 export class StoreModule {
   constructor(
+    @Optional() @SkipSelf() parentModule: StoreModule,
     public store: NgRedux<AppState>,
     storeService: StoreService,
     reduxDevTools: DevToolsExtension,
   ) {
+
+    if (parentModule) {
+      throw new Error('StoreModule is already loaded. Do NOT import it in other modules!');
+    }
 
     store.configureStore(
       combineReducers<AppState>({ root: rootReducer }),
@@ -26,7 +30,14 @@ export class StoreModule {
       storeService.getAllEpics(),
       reduxDevTools.isEnabled() ? [reduxDevTools.enhancer()] : []);
 
-    storeService.replaceReducers(rootReducer, store);
+    storeService.replaceRootReducer(rootReducer, store);
     store.dispatch(AppLoadAction.get());
+  }
+
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: StoreModule,
+      providers: [StoreService],
+    };
   }
 }

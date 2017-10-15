@@ -1,5 +1,6 @@
-import { AppState as MainAppState } from 'app/store';
-import { DropdownXState, DropdownXItem } from 'app/feature-x/dropdown-x/store/dropdown-x.types';
+import { AppState as MainAppState } from 'app/store/store.types';
+import { DropdownXState } from 'app/dropdown-x/store/dropdown-x.types';
+import { DropdownXItem } from 'app/dropdown-x/dropdown-x.types';
 
 export interface FeatureXState {
   dropdownX: DropdownXState<DropdownXItem>;

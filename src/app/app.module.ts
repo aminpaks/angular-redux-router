@@ -5,9 +5,9 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { StoreModule } from './store';
+import { StoreModule } from './store/store.module';
 import { HomeModule } from './home';
-import { FeatureXModule } from './feature-x';
+import { FeatureXModule } from './feature-x/feature-x.module';
 
 @NgModule({
   imports: [
@@ -16,7 +16,7 @@ import { FeatureXModule } from './feature-x';
     CommonModule,
     HomeModule,
     FeatureXModule,
-    StoreModule,
+    StoreModule.forRoot(),
     AppRoutingModule,
   ],
   declarations: [

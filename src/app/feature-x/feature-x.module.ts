@@ -8,7 +8,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { StoreService } from 'app/store//store.service';
-import { DropdownXModule } from './dropdown-x';
+import { DropdownXModule } from 'app/dropdown-x/dropdown-x.module';
 import { FeatureXComponent } from './feature-x.component';
 import { FeatureXRoutingModule } from './feature-x-routing.module';
 import { reducer as featureXReducer } from './store/feature-x.reducers';
@@ -18,9 +18,6 @@ import { reducer as featureXReducer } from './store/feature-x.reducers';
     CommonModule,
     DropdownXModule,
     FeatureXRoutingModule,
-  ],
-  exports: [
-    DropdownXModule,
   ],
   providers: [
   ],

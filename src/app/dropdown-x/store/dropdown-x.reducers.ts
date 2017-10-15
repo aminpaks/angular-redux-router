@@ -1,5 +1,6 @@
 import { PlainAction } from 'redux-typed-actions';
-import { DropdownXState, DropdownXItem } from './dropdown-x.types';
+import { DropdownXState } from './dropdown-x.types';
+import { DropdownXItem } from '../dropdown-x.types';
 import {
   DropdownXLoadAction,
   DropdownXLoadSuccessAction,

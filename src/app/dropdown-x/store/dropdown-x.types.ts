@@ -1,8 +1,4 @@
-export interface DropdownXItem {
-  title: string;
-  value: string;
-  url: string;
-}
+import { DropdownXItem } from '../dropdown-x.types';
 
 export interface DropdownXState<T extends DropdownXItem> {
   items: T[];
